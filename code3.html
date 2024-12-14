@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.02);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal img {
+            display: block;
+            margin: 5% auto;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .footer {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Moaz's Website</h1>
+        <p>Click the image to enlarge it. Use the button to switch images.</p>
+
+        <!-- Image Section -->
+        <img id="image" src="image1.jpg" alt="Interactive Image" onclick="openModal()">
+
+        <!-- Modal for image enlargement -->
+        <div id="modal" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalImage" src="">
+        </div>
+
+        <!-- Buttons -->
+        <button onclick="nextImage()">Next Image</button>
+        <button onclick="shareSite()">Share This Site</button>
+        <button onclick="copyLink()">Copy Link</button>
+
+
+        <!-- Footer -->
+        <div class="footer">
+            Moaz
+        </div>
+    </div>
+
+    <script>
+        // List of images
+        const images = ["image1.jpg", "image2.jpg", "image3.jpg"];
+        let currentIndex = 0;
+
+        // Function to switch to the next image
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length; // Cycle through images
+            document.getElementById("image").src = images[currentIndex];
+        }
+
+        // Image enlargement modal
+        function openModal() {
+            const image = document.getElementById('image');
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            modal.style.display = "block";
+            modalImage.src = image.src;
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = "none";
+        }
+        function copyLink() {
+    const url = window.location.href; 
+    navigator.clipboard.writeText(url).then(() => {
+        alert("Link copied to clipboard!");
+    }).catch(err => {
+        alert("Failed to copy link: " + err);
+    });
+}
+
+
+        // Share site functionality
+        function shareSite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: "Check out Moaz's Website",
+                    url: window.location.href
+                }).then(() => {
+                    alert('Thanks for sharing!');
+                }).catch(err => {
+                    alert('Share failed: ' + err);
+                });
+            } else {
+                alert("Sharing is not supported in this browser.");
+            }
+        }
+
+        // Handle modal close on background click
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
